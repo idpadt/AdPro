@@ -45,4 +45,10 @@ public class ProductRepository {
         }
         throw new ProductNotFoundException("Product with ID " + id + " not found.");
     }
+
+    public Product delete(Product product){
+        int index = indexByProduct(product);
+        productData.remove(index);
+        return product;
+    }
 }
