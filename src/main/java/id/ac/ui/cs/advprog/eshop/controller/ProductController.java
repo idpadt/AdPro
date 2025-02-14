@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateProductPost(@PathVariable int id, Model model){
+    public String updateProductPost(@PathVariable String id, Model model){
         try {
             Product product = service.findById(id);
             model.addAttribute("product", product);
@@ -73,7 +73,7 @@ public class ProductController {
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteProductPost(@PathVariable int id, Model model){
+    public String deleteProductPost(@PathVariable String id, Model model){
         try{
             Product product = service.findById(id);
             service.delete(product);
