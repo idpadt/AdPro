@@ -23,12 +23,12 @@ public class ProductRepository {
     }
 
     public Product update(Product product){
-        int index = indexByProduct(product);
+        int index = findIndexByProduct(product);
         productData.set(index, product);
         return product;
     }
 
-    public int indexByProduct(Product product){
+    public int findIndexByProduct(Product product){
         for(Product currentProduct : productData){
             if(currentProduct.getProductId().equals(product.getProductId())){
                 return productData.indexOf(currentProduct);
@@ -37,9 +37,9 @@ public class ProductRepository {
         throw new ProductNotFoundException("Product with ID " + product.getProductId() + " not found.");
     }
 
-    public Product findById(int id){
+    public Product findById(String id){
         for(Product currentProduct : productData){
-            if(currentProduct.getProductId().equals(Integer.toString(id))){
+            if(currentProduct.getProductId().equals(id)){
                 return currentProduct;
             }
         }
@@ -47,7 +47,7 @@ public class ProductRepository {
     }
 
     public Product delete(Product product){
-        int index = indexByProduct(product);
+        int index = findIndexByProduct(product);
         productData.remove(index);
         return product;
     }
