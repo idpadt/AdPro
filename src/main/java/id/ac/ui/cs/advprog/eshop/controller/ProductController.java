@@ -49,9 +49,9 @@ public class ProductController {
     }
 
     @GetMapping("/update/{id}")
-    public String updateProductPost(@PathVariable String id, Model model){
+    public String updateProductPage(@PathVariable String id, Model model){
         try {
-            Product product = service.findById(id);
+            Product product = service.findProductById(id);
             model.addAttribute("product", product);
             return "updateProduct";
         } catch (ProductNotFoundException ex) {
@@ -75,7 +75,7 @@ public class ProductController {
     @GetMapping("/delete/{id}")
     public String deleteProductPost(@PathVariable String id, Model model){
         try{
-            Product product = service.findById(id);
+            Product product = service.findProductById(id);
             service.delete(product);
             return "redirect:/product/list";
         } catch (ProductNotFoundException ex) {

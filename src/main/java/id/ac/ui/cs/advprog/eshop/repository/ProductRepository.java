@@ -28,22 +28,22 @@ public class ProductRepository {
         return product;
     }
 
-    public int findIndexByProduct(Product product){
-        for(Product currentProduct : productData){
-            if(currentProduct.getProductId().equals(product.getProductId())){
-                return productData.indexOf(currentProduct);
+    public int findIndexById(String id){
+        for(int ii = 0; ii < productData.size(); ii++){
+            if(productData.get(ii).getProductId().equals(id)){
+                return ii;
             }
         }
-        throw new ProductNotFoundException("Product with ID " + product.getProductId() + " not found.");
+        throw new ProductNotFoundException("Product with ID " + id + " not found");
     }
 
-    public Product findById(String id){
-        for(Product currentProduct : productData){
-            if(currentProduct.getProductId().equals(id)){
-                return currentProduct;
-            }
-        }
-        throw new ProductNotFoundException("Product with ID " + id + " not found.");
+    public int findIndexByProduct(Product product){
+        return findIndexById(product.getProductId());
+    }
+
+    public Product findProductById(String id){
+        int index = findIndexById(id);
+        return productData.get(index);
     }
 
     public Product delete(Product product){
