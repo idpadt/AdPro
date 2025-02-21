@@ -54,6 +54,14 @@ sonar {
 	}
 }
 
+sourceSets {
+	main {
+		resources {
+			srcDir("src/main/resources")
+		}
+	}
+}
+
 tasks.register<Test>("unitTest") {
 	description = "Runs the unit tests."
 	group = "verification"
