@@ -45,3 +45,19 @@ What do you think about the cleanliness of the code of the new functional test s
 -> A simple fix would be to make a shared base class so that code aren't repeated.
 
 ## TUTORIAL 2
+
+### Reflection
+
+#### 1.List the code quality issue(s) that you fixed during the exercise and explain your strategy on fixing them.
+
+One of the code quality issues listed by SonarCloud was simply "remove public modifier" in module-2-exercise branch, where i first added SonarCloud.
+It points to almost all unit test classes (ie ProductServiceTest, ProductControllerTest, etc.) was public, and SonarCloud's advice was simply deleting the word "public".
+The result was the classes uses the default modifier, ie protected.
+
+#### 2. Look at your CI/CD workflows (GitHub)/pipelines (GitLab). Do you think the current implementation has met the definition of Continuous Integration and Continuous Deployment?
+
+For CI, yes. My current GitHub actions includes thing like OSSF Security Scorecard (for security), custom CI (for testing), and SonarCloud (also for testing).
+By definition, I've met the minimum requirements for CI.
+
+However for CD, not yet. I am currently struggling with Koyeb and still cannot deploy.
+I also don't have any yml or GitHub actions related to CD.
