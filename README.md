@@ -44,3 +44,4 @@ What do you think about the cleanliness of the code of the new functional test s
 
 -> A simple fix would be to make a shared base class so that code aren't repeated.
 
+## TUTORIAL 2
