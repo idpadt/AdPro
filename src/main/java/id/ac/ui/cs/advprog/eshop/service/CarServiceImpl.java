@@ -21,25 +21,29 @@ public class CarServiceImpl implements CarService {
     }
 
     @Override
-    public List<Car> findAll(){
-        Iterator<Car> carIterator = carRepository.findAll();
+    public Car update(Car car){
+        carRepository.update(car);
+        return car;
+    }
+
+    @Override
+    public Car delete(Car car){
+        carRepository.delete(car);
+        return car;
+    }
+
+    @Override
+    public List<Car> getAll(){
+        Iterator<Car> carIterator = carRepository.getAll();
         List<Car> allCar = new ArrayList<Car>();
         carIterator.forEachRemaining(allCar::add);
         return allCar;
     }
 
     @Override
-    public Car findById(String carId){
-        Car car = carRepository.findById(carId);
+    public Car getById(String carId){
+        Car car = carRepository.getById(carId);
         return car;
     }
 
-    @Override
-    public void update(String carId, Car car){
-        carRepository.update(carId, car);
-    }
-
-    public void deleteCarById(String carId){
-        carRepository.delete(carId);
-    }
 }

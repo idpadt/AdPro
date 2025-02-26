@@ -34,15 +34,15 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public List<Product> findAll(){
-        Iterator<Product> productIterator = productRepository.findAll();
+    public List<Product> getAll(){
+        Iterator<Product> productIterator = productRepository.getAll();
         List<Product> allProduct = new ArrayList<>();
         productIterator.forEachRemaining(allProduct::add);
         return allProduct;
     }
 
     @Override
-    public Product findProductById(String id) {
-        return productRepository.findProductById(id);
+    public Product getById(String id) {
+        return productRepository.getById(id);
     }
 }
