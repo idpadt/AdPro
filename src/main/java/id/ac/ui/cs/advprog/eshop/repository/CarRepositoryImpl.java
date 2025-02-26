@@ -3,6 +3,7 @@ package id.ac.ui.cs.advprog.eshop.repository;
 import id.ac.ui.cs.advprog.eshop.exception.CarNotFoundException;
 import id.ac.ui.cs.advprog.eshop.model.Car;
 import org.springframework.stereotype.Repository;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -45,7 +46,7 @@ public class CarRepositoryImpl implements CarRepository {
         return carData.iterator();
     }
 
-    public int findIndexById(String id) throws CarNotFoundException {
+    private int findIndexById(String id) throws CarNotFoundException {
         for(int ii = 0; ii < carData.size(); ii++){
             if(carData.get(ii).getCarId().equals(id)){
                 return ii;
