@@ -5,11 +5,11 @@ import id.ac.ui.cs.advprog.eshop.model.Product;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import static org.junit.jupiter.api.Assertions.*;
 import org.mockito.InjectMocks;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Iterator;
-import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class)
 class ProductRepositoryTest {
@@ -34,10 +34,10 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testCreateAndFind() {
+    void testCreateAndGet() {
         productRepository.create(product1);
 
-        Iterator<Product> productIterator = productRepository.findAll();
+        Iterator<Product> productIterator = productRepository.getAll();
         assertTrue(productIterator.hasNext());
 
         Product savedProduct = productIterator.next();
@@ -47,17 +47,27 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testFindAllIfEmpty() {
-            Iterator<Product> productIterator = productRepository.findAll();
+    void testCreateIfNullId(){
+        product1.setProductId(null);
+        productRepository.create(product1);
+
+        Iterator<Product> productIterator = productRepository.getAll();
+        Product savedProduct = productIterator.next();
+        assertNotNull(savedProduct.getProductId());
+    }
+
+    @Test
+    void testGetAllIfEmpty() {
+            Iterator<Product> productIterator = productRepository.getAll();
             assertFalse(productIterator.hasNext());
     }
 
     @Test
-    void testFindAllIfMoreThanOneProduct() {
+    void testGetAllIfMoreThanOneProduct() {
         productRepository.create(product1);
         productRepository.create(product2);
 
-        Iterator<Product> productIterator = productRepository.findAll();
+        Iterator<Product> productIterator = productRepository.getAll();
         assertTrue(productIterator.hasNext());
 
         Product savedProduct = productIterator.next();
@@ -70,26 +80,16 @@ class ProductRepositoryTest {
     }
 
     @Test
-    void testFindIndexByProduct(){
+    void testGetById(){
         productRepository.create(product1);
-        assertEquals(0, productRepository.findIndexByProduct(product1));
-
         productRepository.create(product2);
-        assertEquals(1, productRepository.findIndexByProduct(product2));
-        assertEquals(0, productRepository.findIndexByProduct(product1));
+        assertEquals(product2, productRepository.getById(product2.getProductId()));
+        assertEquals(product1, productRepository.getById(product1.getProductId()));
     }
 
     @Test
-    void testFindIndexByMissingProductId(){
-        assertThrows(ProductNotFoundException.class, () -> productRepository.findIndexByProduct(product1));
-    }
-
-    @Test
-    void testFindById(){
-        productRepository.create(product1);
-        productRepository.create(product2);
-        assertEquals(product2, productRepository.findProductById(product2.getProductId()));
-        assertEquals(product1, productRepository.findProductById(product1.getProductId()));
+    void testGetByIdIfNotFound() {
+        assertThrows(ProductNotFoundException.class, () -> productRepository.getById(product1.getProductId()));
     }
 
     @Test
@@ -100,11 +100,11 @@ class ProductRepositoryTest {
         product1.setProductQuantity(50);
         productRepository.update(product1);
 
-        assertEquals(product1, productRepository.findProductById(product1.getProductId()));
+        assertEquals(product1, productRepository.getById(product1.getProductId()));
     }
 
     @Test
-    void testUpdateMissingProduct(){
+    void testUpdateIfNotFound(){
         productRepository.create(product1);
         assertThrows(ProductNotFoundException.class, () -> productRepository.update(product2));
     }
@@ -112,14 +112,14 @@ class ProductRepositoryTest {
     @Test
     void testDelete(){
         productRepository.create(product1);
-        assertEquals(product1, productRepository.findProductById(product1.getProductId()));
+        assertEquals(product1, productRepository.getById(product1.getProductId()));
 
         productRepository.delete(product1);
-        assertThrows(ProductNotFoundException.class, () -> productRepository.findProductById(product1.getProductId()));
+        assertThrows(ProductNotFoundException.class, () -> productRepository.getById(product1.getProductId()));
     }
 
     @Test
-    void testDeleteMissingProduct(){
+    void testDeleteIfNotFound(){
         assertThrows(ProductNotFoundException.class, () -> productRepository.delete(product1));
     }
 }

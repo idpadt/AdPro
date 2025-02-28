@@ -82,7 +82,7 @@ class ProductControllerTest {
         List<Product> products = new ArrayList<>();
         products.add(product1);
         products.add(product2);
-        when(productService.findAll()).thenReturn(products);
+        when(productService.getAll()).thenReturn(products);
 
         mvc.perform(get("/product/list"))
                 .andExpectAll(status().isOk(),
@@ -92,40 +92,40 @@ class ProductControllerTest {
                         model().attribute("products", hasItem(product1)),
                         model().attribute("products", hasItem(product2)));
 
-        verify(productService).findAll();
+        verify(productService).getAll();
     }
 
     @Test
     void testProductListPageIfEmpty() throws Exception {
         List<Product> products = new ArrayList<>();
-        when(productService.findAll()).thenReturn(products);
+        when(productService.getAll()).thenReturn(products);
 
         mvc.perform(get("/product/list"))
                 .andExpectAll(status().isOk(),
                         view().name("productList"),
                         model().attribute("products", hasSize(0)));
 
-        verify(productService).findAll();
+        verify(productService).getAll();
     }
 
     @Test
     void testUpdateProductPage() throws Exception {
-        when(productService.findProductById(product1.getProductId())).thenReturn(product1);
+        when(productService.getById(product1.getProductId())).thenReturn(product1);
         mvc.perform(get("/product/update/" + product1.getProductId()))
                 .andExpectAll(status().isOk(),
                         view().name("updateProduct"),
                         model().attributeExists("product"));
 
-        verify(productService).findProductById(product1.getProductId());
+        verify(productService).getById(product1.getProductId());
     }
 
     @Test
     void testUpdateProductPageNotFound() throws Exception {
-        when(productService.findProductById(product1.getProductId())).thenThrow(ProductNotFoundException.class);
+        when(productService.getById(product1.getProductId())).thenThrow(ProductNotFoundException.class);
         mvc.perform(get("/product/update/" + product1.getProductId()))
                 .andExpectAll(status().is3xxRedirection(),
                         redirectedUrl("list"));
-        verify(productService).findProductById(product1.getProductId());
+        verify(productService).getById(product1.getProductId());
     }
 
     @Test
@@ -155,7 +155,7 @@ class ProductControllerTest {
 
     @Test
     void testDeleteProductPost() throws Exception {
-        when(productService.findProductById(product1.getProductId())).thenReturn(product1);
+        when(productService.getById(product1.getProductId())).thenReturn(product1);
         when(productService.delete(product1)).thenReturn(product1);
 
         mvc.perform(get("/product/delete/" + product1.getProductId()))
@@ -163,30 +163,30 @@ class ProductControllerTest {
                         redirectedUrl("/product/list"));
 
         verify(productService).delete(product1);
-        verify(productService).findProductById(product1.getProductId());
+        verify(productService).getById(product1.getProductId());
     }
 
     @Test
     void testDeleteProductPostIfIdNotFound() throws Exception {
-        when(productService.findProductById(product1.getProductId())).thenThrow(ProductNotFoundException.class);
+        when(productService.getById(product1.getProductId())).thenThrow(ProductNotFoundException.class);
 
         mvc.perform(get("/product/delete/" + product1.getProductId()))
                 .andExpectAll(status().is3xxRedirection(),
                         redirectedUrl("list"));
 
-        verify(productService).findProductById(product1.getProductId());
+        verify(productService).getById(product1.getProductId());
     }
 
     @Test
     void testDeleteProductPostIfNotValid() throws Exception {
-        when(productService.findProductById(product1.getProductId())).thenReturn(product1);
+        when(productService.getById(product1.getProductId())).thenReturn(product1);
         when(productService.delete(product1)).thenThrow(ProductNotFoundException.class);
 
         mvc.perform(get("/product/delete/" + product1.getProductId()))
                 .andExpectAll(status().is3xxRedirection(),
                         redirectedUrl("list"));
 
-        verify(productService).findProductById(product1.getProductId());
+        verify(productService).getById(product1.getProductId());
         verify(productService).delete(product1);
     }
 }

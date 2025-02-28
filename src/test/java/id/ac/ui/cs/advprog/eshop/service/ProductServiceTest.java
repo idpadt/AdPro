@@ -2,7 +2,7 @@ package id.ac.ui.cs.advprog.eshop.service;
 
 import id.ac.ui.cs.advprog.eshop.exception.ProductNotFoundException;
 import id.ac.ui.cs.advprog.eshop.model.Product;
-import id.ac.ui.cs.advprog.eshop.repository.ProductRepositoryImpl;
+import id.ac.ui.cs.advprog.eshop.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 class ProductServiceTest {
 
     @Mock
-    private ProductRepositoryImpl productRepository;
+    private ProductRepository productRepository;
 
     @InjectMocks
     private ProductServiceImpl productService;
@@ -50,45 +50,45 @@ class ProductServiceTest {
     }
 
     @Test
-    void testFindAll(){
+    void testGetAll(){
         List<Product> mockProducts = new ArrayList<>();
         mockProducts.add(product1);
         mockProducts.add(product2);
-        when(productRepository.findAll()).thenReturn(mockProducts.iterator());
+        when(productRepository.getAll()).thenReturn(mockProducts.iterator());
 
-        List<Product> productList = productService.findAll();
+        List<Product> productList = productService.getAll();
         assertTrue(productList.contains(product1));
         assertTrue(productList.contains(product2));
-        verify(productRepository).findAll();
+        verify(productRepository).getAll();
     }
 
     @Test
-    void testFindAllIfEmpty(){
+    void testGetAllIfEmpty(){
         List<Product> mockProducts = new ArrayList<>();
-        when(productRepository.findAll()).thenReturn(mockProducts.iterator());
+        when(productRepository.getAll()).thenReturn(mockProducts.iterator());
 
-        List<Product> productList = productService.findAll();
+        List<Product> productList = productService.getAll();
         assertTrue(productList.isEmpty());
-        verify(productRepository).findAll();
+        verify(productRepository).getAll();
     }
 
     @Test
-    void testFindProductById() {
-        when(productRepository.findProductById(product1.getProductId())).thenReturn(product1);
-        when(productRepository.findProductById(product2.getProductId())).thenReturn(product2);
+    void testGetById() {
+        when(productRepository.getById(product1.getProductId())).thenReturn(product1);
+        when(productRepository.getById(product2.getProductId())).thenReturn(product2);
 
-        assertEquals(product2, productService.findProductById(product2.getProductId()));
-        assertEquals(product1, productService.findProductById(product1.getProductId()));
+        assertEquals(product2, productService.getById(product2.getProductId()));
+        assertEquals(product1, productService.getById(product1.getProductId()));
 
-        verify(productRepository).findProductById(product1.getProductId());
-        verify(productRepository).findProductById(product2.getProductId());
+        verify(productRepository).getById(product1.getProductId());
+        verify(productRepository).getById(product2.getProductId());
     }
 
     @Test
-    void testFindProductByIdNotFound() {
-        when(productRepository.findProductById(product1.getProductId())).thenThrow(ProductNotFoundException.class);
-        assertThrows(ProductNotFoundException.class, () -> productService.findProductById(product1.getProductId()));
-        verify(productRepository).findProductById(product1.getProductId());
+    void testGetByIdIfNotFound() {
+        when(productRepository.getById(product1.getProductId())).thenThrow(ProductNotFoundException.class);
+        assertThrows(ProductNotFoundException.class, () -> productService.getById(product1.getProductId()));
+        verify(productRepository).getById(product1.getProductId());
     }
 
     @Test
@@ -99,7 +99,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void testUpdateNotFound(){
+    void testUpdateIfNotFound(){
         when(productRepository.update(product1)).thenThrow(ProductNotFoundException.class);
         assertThrows(ProductNotFoundException.class, () -> productService.update(product1));
         verify(productRepository).update(product1);
@@ -113,7 +113,7 @@ class ProductServiceTest {
     }
 
     @Test
-    void testDeleteNotFound(){
+    void testDeleteIfNotFound(){
         when(productRepository.delete(product1)).thenThrow(ProductNotFoundException.class);
         assertThrows(ProductNotFoundException.class, () -> productService.delete(product1));
         verify(productRepository).delete(product1);
