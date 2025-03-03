@@ -18,6 +18,8 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
 
+    private final String redirectList = "redirect:list";
+
     @Autowired
     private ProductService service;
 
@@ -34,7 +36,7 @@ public class ProductController {
             return "createProduct";
         }
         service.create(product);
-        return "redirect:list";
+        return redirectList;
     }
 
     @GetMapping("/list")
@@ -51,7 +53,7 @@ public class ProductController {
             model.addAttribute("product", product);
             return "updateProduct";
         } catch (ProductNotFoundException ex) {
-            return "redirect:list";
+            return redirectList;
         }
     }
 
@@ -62,9 +64,9 @@ public class ProductController {
         }
         try {
             service.update(product);
-            return "redirect:list";
+            return redirectList;
         } catch (ProductNotFoundException ex) {
-            return "redirect:list";
+            return redirectList;
         }
     }
 
@@ -75,7 +77,7 @@ public class ProductController {
             service.delete(product);
             return "redirect:/product/list";
         } catch (ProductNotFoundException ex) {
-            return "redirect:list";
+            return redirectList;
         }
     }
 }

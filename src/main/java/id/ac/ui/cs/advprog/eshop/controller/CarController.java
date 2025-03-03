@@ -18,8 +18,10 @@ import java.util.List;
 @RequestMapping("/car")
 public class CarController {
 
+    private final String redirectList = "redirect:list";
+
     @Autowired
-    private CarService carService;
+    private CarService service;
 
     @GetMapping("/create")
     public String createCarPage(Model model){
@@ -33,13 +35,13 @@ public class CarController {
         if(bindingResult.hasErrors()){
             return "createCar";
         }
-        carService.create(car);
-        return "redirect:list";
+        service.create(car);
+        return redirectList;
     }
 
     @GetMapping("/list")
     public String carListPage(Model model){
-        List<Car> allCars = carService.getAll();
+        List<Car> allCars = service.getAll();
         model.addAttribute("cars", allCars);
         return "carList";
     }
@@ -47,11 +49,11 @@ public class CarController {
     @GetMapping("/edit/{carId}")
     public String editCarPage(@PathVariable String carId, Model model){
         try {
-            Car car = carService.getById(carId);
+            Car car = service.getById(carId);
             model.addAttribute("car", car);
             return "editCar";
         } catch (CarNotFoundException ex) {
-            return "redirect:list";
+            return redirectList;
         }
     }
 
@@ -61,22 +63,21 @@ public class CarController {
             return "editCar";
         }
         try {
-            System.out.println(car.getCarId());
-            carService.update(car);
-            return "redirect:list";
+            service.update(car);
+            return redirectList;
         } catch (CarNotFoundException ex) {
-            return "redirect:list";
+            return redirectList;
         }
     }
 
     @PostMapping("/delete")
     public String deleteCar(@RequestParam("carId") String carId){
         try {
-            Car car = carService.getById(carId);
-            carService.delete(car);
-            return "redirect:list";
+            Car car = service.getById(carId);
+            service.delete(car);
+            return redirectList;
         } catch (CarNotFoundException ex) {
-            return "redirect:list";
+            return redirectList;
         }
     }
 
