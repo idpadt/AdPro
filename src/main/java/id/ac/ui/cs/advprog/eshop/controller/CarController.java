@@ -19,9 +19,12 @@ import java.util.List;
 public class CarController {
 
     private final String redirectList = "redirect:list";
+    private final CarService service;
 
     @Autowired
-    private CarService service;
+    public CarController(CarService service) {
+        this.service = service;
+    }
 
     @GetMapping("/create")
     public String createCarPage(Model model){

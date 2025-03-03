@@ -23,7 +23,6 @@ public class CarServiceTest {
     @Mock
     private CarRepository carRepository;
 
-    @InjectMocks
     private CarServiceImpl carService;
 
     private Car car1;
@@ -31,6 +30,8 @@ public class CarServiceTest {
 
     @BeforeEach
     void setUp() {
+        carService = new CarServiceImpl(carRepository);
+
         this.car1 = new Car();
         car1.setCarId("7erw-erwt987-7wer-7698ew");
         car1.setCarName("Honda");
