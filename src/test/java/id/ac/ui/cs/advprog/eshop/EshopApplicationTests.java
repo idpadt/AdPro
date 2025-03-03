@@ -14,6 +14,9 @@ class EshopApplicationTests {
 
 	@Test
 	void contextLoads() {
+		// is empty
+		//
+		// fails if web app fails to run
 	}
 
 	@Test
@@ -22,8 +25,7 @@ class EshopApplicationTests {
 
 		String output = capturedOutput.getAll();
 
-		assertTrue(output.contains("Application started")); // Assert on the custom message
-		// assertTrue(output.contains("This is a debug message.")); // Assert on another message
+		assertTrue(output.contains("Application started"));
 	}
 
 }
