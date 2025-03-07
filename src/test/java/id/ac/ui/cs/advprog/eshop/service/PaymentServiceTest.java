@@ -7,6 +7,7 @@ import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.model.Payment;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.repository.PaymentRepository;
+import id.ac.ui.cs.advprog.eshop.repository.PaymentRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -24,8 +25,11 @@ public class PaymentServiceTest {
     @Mock
     private PaymentRepository paymentRepository;
 
+    @Mock
+    private OrderService orderService;
+
     @InjectMocks
-    PaymentServiceImpl paymentService;
+    private PaymentServiceImpl paymentService;
 
     private String paymentId = UUID.randomUUID().toString();
     private String paymentMethod = PaymentMethod.BY_VOUCHER.getValue();
@@ -67,6 +71,7 @@ public class PaymentServiceTest {
 
     @Test
     void testSetStatus(){
+        payment1.setStatus(PaymentStatus.SUCCESS.getValue());
         Payment payment = paymentService.setStatus(payment1, PaymentStatus.SUCCESS.getValue());
         assertEquals(PaymentStatus.SUCCESS.getValue(), payment.getStatus());
 
@@ -75,18 +80,22 @@ public class PaymentServiceTest {
 
     @Test
     void testSetStatusInvalidPayment(){
+        doThrow(PaymentException.class).when(paymentRepository).setStatus(any(Payment.class), anyString());
         assertThrows(PaymentException.class, () ->
                 paymentService.setStatus(payment1, PaymentStatus.SUCCESS.getValue()));
     }
 
     @Test
     void testSetStatusInvalidMethod(){
+        doThrow(PaymentException.class).when(paymentRepository).setStatus(any(Payment.class), anyString());
         assertThrows(PaymentException.class, () ->
                 paymentService.setStatus(payment1, "Lunas"));
     }
 
     @Test
     void testGetPayment(){
+        when(paymentRepository.getPaymentById(payment1.getId())).thenReturn(payment1);
+
         Payment payment = paymentService.getPayment(payment1.getId());
         assertEquals(payment1, payment);
 
@@ -95,12 +104,17 @@ public class PaymentServiceTest {
 
     @Test
     void testGetPaymentInvalidId(){
+        when(paymentRepository.getPaymentById(anyString())).thenThrow(PaymentException.class);
         assertThrows(PaymentException.class, () ->
                 paymentService.getPayment(payment1.getId()));
     }
 
     @Test
     void testGetAllPayments(){
+        List<Payment> savedPayments= new ArrayList<Payment>();
+        savedPayments.add(payment1);
+
+        when(paymentRepository.getAllPayments()).thenReturn(savedPayments);
         List<Payment> payments = paymentService.getAllPayments();
         assertTrue(payments.contains(payment1));
 
@@ -109,6 +123,8 @@ public class PaymentServiceTest {
 
     @Test
     void testGetAllPaymentsEmpty(){
+        List<Payment> savedPayments= new ArrayList<Payment>();
+        when(paymentRepository.getAllPayments()).thenReturn(savedPayments);
         List<Payment> payments = paymentService.getAllPayments();
         assertTrue(payments.isEmpty());
 
