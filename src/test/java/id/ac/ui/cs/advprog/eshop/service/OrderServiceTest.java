@@ -64,7 +64,7 @@ class OrderServiceTest {
         doReturn(order).when(orderRepository).findById(order.getId());
 
         assertNull(orderService.createOrder(order));
-        verify(orderRepository, times(1)).save(order);
+        verify(orderRepository, times(0)).save(order);
     }
 
     @Test
@@ -90,7 +90,7 @@ class OrderServiceTest {
         assertThrows(IllegalArgumentException.class,
                 () -> orderService.updateStatus(order.getId(), "MEOW"));
 
-        verify(orderRepository, times(1)).save(any(Order.class));
+        verify(orderRepository, times(0)).save(any(Order.class));
     }
 
     @Test
@@ -99,7 +99,7 @@ class OrderServiceTest {
 
         assertThrows(NoSuchElementException.class,
                 () -> orderService.updateStatus("zczc", OrderStatus.SUCCESS.getValue()));
-        verify(orderRepository, times(1)).save(any(Order.class));
+        verify(orderRepository, times(0)).save(any(Order.class));
     }
 
     @Test
