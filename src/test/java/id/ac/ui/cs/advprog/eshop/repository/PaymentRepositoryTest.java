@@ -22,6 +22,8 @@ public class PaymentRepositoryTest {
 
     @BeforeEach
     void setUp() {
+        paymentRepository = new PaymentRepositoryImpl();
+
         String id = "a08-kb43h-ds9h-ogfdiuya-524k";
         String method = PaymentMethod.BY_VOUCHER.getValue();
         String status = PaymentStatus.WAITING_PAYMENT.getValue();
