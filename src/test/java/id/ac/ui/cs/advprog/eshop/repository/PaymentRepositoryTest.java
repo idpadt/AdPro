@@ -81,7 +81,7 @@ public class PaymentRepositoryTest {
         String status = PaymentStatus.SUCCESS.getValue();
         paymentRepository.setStatus(payment1, status);
 
-        Payment savedPayment = paymentRepository.getPaymentById(payment1);
+        Payment savedPayment = paymentRepository.getPaymentById(payment1.getId());
         payment1.setStatus(status);
         assertEquals(payment1, savedPayment);
     }
