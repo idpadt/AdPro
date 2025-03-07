@@ -13,7 +13,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PaymentRepositoryTest {
+class PaymentRepositoryTest {
 
     PaymentRepository paymentRepository;
 
@@ -49,16 +49,18 @@ public class PaymentRepositoryTest {
     @Test
     void testGetPaymentInvalidId(){
         paymentRepository.addPayment(payment1);
+        String id = payment2.getId();
 
         assertThrows(PaymentException.class, () ->
-                paymentRepository.getPaymentById(payment2.getId()));
+                paymentRepository.getPaymentById(id));
 
     }
 
     @Test
     void testGetPaymentIfEmpty(){
+        String id = payment1.getId();
         assertThrows(PaymentException.class, () ->
-                paymentRepository.getPaymentById(payment1.getId()));
+                paymentRepository.getPaymentById(id));
     }
 
     @Test
@@ -91,9 +93,10 @@ public class PaymentRepositoryTest {
     @Test
     void testSetStatusInvalidId(){
         paymentRepository.addPayment(payment1);
+        String status = PaymentStatus.SUCCESS.getValue();
 
         assertThrows(PaymentException.class, () ->
-                paymentRepository.setStatus(payment2, PaymentStatus.SUCCESS.getValue()));
+                paymentRepository.setStatus(payment2, status));
     }
 
     @Test
