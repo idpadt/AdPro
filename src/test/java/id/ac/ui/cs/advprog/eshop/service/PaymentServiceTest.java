@@ -101,7 +101,7 @@ public class PaymentServiceTest {
 
     @Test
     void testGetAllPayments(){
-        List<Payment> payments = paymentService.getAllPayment();
+        List<Payment> payments = paymentService.getAllPayments();
         assertTrue(payments.contains(payment1));
 
         verify(paymentRepository).getAllPayments();
@@ -109,7 +109,7 @@ public class PaymentServiceTest {
 
     @Test
     void testGetAllPaymentsEmpty(){
-        List<Payment> payments = paymentService.getAllPayment();
+        List<Payment> payments = paymentService.getAllPayments();
         assertTrue(payments.isEmpty());
 
         verify(paymentRepository).getAllPayments();
