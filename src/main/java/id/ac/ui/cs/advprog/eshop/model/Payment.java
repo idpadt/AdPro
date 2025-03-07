@@ -18,33 +18,23 @@ public class Payment {
         this.id = id;
         this.data = data;
 
-        if (checkStatus(status)) {
-            this.status = status;
-        }
-
-        if (checkMethod(method)) {
-            this.method = method;
-        }
-
+        setStatus(status);
+        setMethod(method);
     }
 
     public void setStatus(String status){
-        if (checkStatus(status)) {
+        if (PaymentStatus.contains(status)) {
             this.status = status;
+        } else {
+            throw new PaymentException("Invalid status");
         }
     }
 
-    private boolean checkStatus(String status){
-        if(PaymentStatus.contains(status)){
-            return true;
+    private void setMethod(String method){
+        if (PaymentMethod.contains(method)) {
+            this.method = method;
+        } else {
+            throw new PaymentException("Invalid method");
         }
-        throw new PaymentException("Invalid status");
-    }
-
-    private boolean checkMethod(String method){
-        if(PaymentMethod.contains(method)){
-            return true;
-        }
-        throw new PaymentException("Invalid method");
     }
 }
