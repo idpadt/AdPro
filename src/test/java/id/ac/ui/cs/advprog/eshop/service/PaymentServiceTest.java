@@ -28,7 +28,6 @@ public class PaymentServiceTest {
     @Mock
     private OrderService orderService;
 
-    @InjectMocks
     private PaymentServiceImpl paymentService;
 
     private String paymentId = UUID.randomUUID().toString();
@@ -40,6 +39,8 @@ public class PaymentServiceTest {
 
     @BeforeEach
     void setUp() {
+        paymentService = new PaymentServiceImpl(paymentRepository, orderService);
+
         List<Product> products = new ArrayList<>();
         Product product1 = new Product();
         product1.setProductId("eb558e9f-1c39-460e-8860-71af6af63bd6");
@@ -49,7 +50,6 @@ public class PaymentServiceTest {
 
         order1 = new Order("13652556-012a-4c07-b546-54eb1396d79b",
                 products, 1788560800L, "Safira Sudrajat");
-
         payment1 = new Payment(paymentId, paymentMethod, paymentStatus, paymentData);
     }
 
@@ -81,8 +81,9 @@ public class PaymentServiceTest {
     @Test
     void testSetStatusInvalidPayment(){
         doThrow(PaymentException.class).when(paymentRepository).setStatus(any(Payment.class), anyString());
+        String status = PaymentStatus.SUCCESS.getValue();
         assertThrows(PaymentException.class, () ->
-                paymentService.setStatus(payment1, PaymentStatus.SUCCESS.getValue()));
+                paymentService.setStatus(payment1, status));
     }
 
     @Test
@@ -105,8 +106,9 @@ public class PaymentServiceTest {
     @Test
     void testGetPaymentInvalidId(){
         when(paymentRepository.getPaymentById(anyString())).thenThrow(PaymentException.class);
+        String savedId = payment1.getId();
         assertThrows(PaymentException.class, () ->
-                paymentService.getPayment(payment1.getId()));
+                paymentService.getPayment(savedId));
     }
 
     @Test

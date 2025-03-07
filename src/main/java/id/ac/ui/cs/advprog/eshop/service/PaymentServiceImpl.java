@@ -16,11 +16,14 @@ import java.util.UUID;
 @Service
 public class PaymentServiceImpl implements PaymentService {
 
-    @Autowired
     private PaymentRepository paymentRepository;
+    private OrderService orderService;
 
     @Autowired
-    private OrderService orderService;
+    public PaymentServiceImpl(PaymentRepository paymentRepository, OrderService orderService) {
+        this.paymentRepository = paymentRepository;
+        this.orderService = orderService;
+    }
 
     private Map<String, String> paymentOrderRelation = new HashMap<String, String>();
 
