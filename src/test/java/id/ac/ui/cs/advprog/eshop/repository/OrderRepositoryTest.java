@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import id.ac.ui.cs.advprog.eshop.model.Product;
 import id.ac.ui.cs.advprog.eshop.model.Order;
 import id.ac.ui.cs.advprog.eshop.repository.OrderRepository;
+import enums.OrderStatus;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
