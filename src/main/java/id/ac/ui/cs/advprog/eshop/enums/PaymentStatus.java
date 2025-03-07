@@ -3,21 +3,20 @@ package id.ac.ui.cs.advprog.eshop.enums;
 import lombok.Getter;
 
 @Getter
-public enum OrderStatus {
+public enum PaymentStatus {
     WAITING_PAYMENT("WAITING_PAYMENT"),
-    FAILED("FAILED"),
-    SUCCESS("SUCCESS"),
-    CANCELLED("CANCELLED");
+    REJECTED("REJECTED"),
+    SUCCESS("SUCCESS");
 
     private final String value;
 
-    OrderStatus(String value) {
+    PaymentStatus(String value) {
         this.value = value;
     }
 
     public static boolean contains(String param){
-        for(OrderStatus orderStatus : OrderStatus.values()){
-            if(orderStatus.name().equals(param)){
+        for(PaymentStatus paymentStatus : PaymentStatus.values()){
+            if(paymentStatus.name().equals(param)){
                 return true;
             }
         }
